@@ -40,12 +40,8 @@
 
 package javax.el;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * Handles imports of class names and package names.  An imported package
@@ -117,6 +113,15 @@ public class ImportHandler {
      *     not public.
      */
     public Class<?> resolveClass(String name) {
+        if (System.getProperty("javax.el.class-resolution.disable") != null) {
+            return null;
+        }
+
+        try {
+            Class.forName("org.jahia.osgi.LogBridge").getMethod("log", String.class, int.class, Object.class, Throwable.class).invoke(null, ImportHandler.class.getName(), 10000, "Trying to resolve class : " + name, null);
+        } catch (Exception e) {
+            // Cannot log
+        }
 
         String className = classNameMap.get(name);
         if (className != null) {

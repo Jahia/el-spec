@@ -52,7 +52,7 @@
     <groupId>javax.el</groupId>
     <artifactId>javax.el-api</artifactId>
     <packaging>jar</packaging>
-    <version>3.0.0</version>
+    <version>3.0.0-jahia</version>
     <name>Expression Language 3.0 API</name>
 
     <properties>
@@ -203,6 +203,7 @@
   <a href="{@docRoot}/doc-files/final-spec-license.html" target="_top">license terms</a>.
 ]]>
                             </bottom>
+                            <additionalparam>-Xdoclint:none --allow-script-in-comments</additionalparam>
                         </configuration>
                     </execution>
                 </executions>
