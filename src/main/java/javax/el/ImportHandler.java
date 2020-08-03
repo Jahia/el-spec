@@ -116,7 +116,7 @@ public class ImportHandler {
         if (System.getProperty("javax.el.class-resolution.disable") != null) {
             return null;
         }
-        if (System.getProperty("javax.el.class-resolution.disableOnLowerCase") != null && !name.startsWith(name.toUpperCase())) {
+        if (System.getProperty("javax.el.class-resolution.disableOnLowerCase") != null && Character.isLowerCase(name.charAt(0))) {
             return null;
         }
 
