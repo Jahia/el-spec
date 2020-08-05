@@ -40,6 +40,7 @@
 
 package javax.el;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
@@ -51,6 +52,21 @@ import java.util.*;
  * at evaluation time.
  */
 public class ImportHandler {
+    private static boolean classResolutionDisable;
+    private static boolean classResolutionDisableOnLowerCase;
+    private static boolean classResolutionLogStackTrace;
+    private static Method logMethod;
+
+    static {
+        classResolutionDisable = System.getProperty("javax.el.class-resolution.disable") != null ;
+        classResolutionDisableOnLowerCase = System.getProperty("javax.el.class-resolution.disableOnLowerCase") != null;
+        classResolutionLogStackTrace = System.getProperty("javax.el.class-resolution.logStackTrace") != null;
+        try {
+            logMethod = Class.forName("org.jahia.osgi.LogBridge").getMethod("log", String.class, int.class, Object.class, Throwable.class);
+        } catch (NoSuchMethodException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Map<String, String> classNameMap = new HashMap<String, String>();
     private Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
@@ -113,10 +129,7 @@ public class ImportHandler {
      *     not public.
      */
     public Class<?> resolveClass(String name) {
-        if (System.getProperty("javax.el.class-resolution.disable") != null) {
-            return null;
-        }
-        if (System.getProperty("javax.el.class-resolution.disableOnLowerCase") != null && Character.isLowerCase(name.charAt(0))) {
+        if (skipResolution(name)) {
             return null;
         }
 
@@ -135,10 +148,10 @@ public class ImportHandler {
         }
 
         try {
-            if (System.getProperty("javax.el.class-resolution.logStackTrace") != null) {
-                Class.forName("org.jahia.osgi.LogBridge").getMethod("log", String.class, int.class, Object.class, Throwable.class).invoke(null, ImportHandler.class.getName(), 30000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", new Exception());
+            if (classResolutionLogStackTrace) {
+                logMethod.invoke(null, ImportHandler.class.getName(), 30000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", new Exception());
             } else {
-                Class.forName("org.jahia.osgi.LogBridge").getMethod("log", String.class, int.class, Object.class, Throwable.class).invoke(null, ImportHandler.class.getName(), 30000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", null);
+                logMethod.invoke(null, ImportHandler.class.getName(), 30000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", null);
             }
         } catch (Exception e) {
             // Cannot log
@@ -199,5 +212,9 @@ public class ImportHandler {
                 || ! Modifier.isPublic((modifiers))) {
             throw new ELException("Imported class must be public, and cannot be abstract or an interface");
         }
+    }
+
+    private boolean skipResolution(String name) {
+        return classResolutionDisable ||  (classResolutionDisableOnLowerCase && Character.isLowerCase(name.charAt(0)));
     }
 }
