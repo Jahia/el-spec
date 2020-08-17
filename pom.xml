@@ -96,6 +96,17 @@
         <tag>javax.el-api-3.0.0-jahia</tag>
         <url>http://java.net/projects/el-spec/sources/source-code/show/tags/javax.el-api-3.0.0</url>
     </scm>
+    
+    <distributionManagement>
+        <repository>
+            <id>thirdparty-releases</id>
+            <url>https://devtools.jahia.com/nexus/content/repositories/thirdparty-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>thirdparty-snapshots</id>
+            <url>https://devtools.jahia.com/nexus/content/repositories/thirdparty-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <developers>
         <developer>
