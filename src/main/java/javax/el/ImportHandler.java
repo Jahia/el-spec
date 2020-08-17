@@ -149,9 +149,9 @@ public class ImportHandler {
 
         try {
             if (classResolutionLogStackTrace) {
-                logMethod.invoke(null, ImportHandler.class.getName(), 30000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", new Exception());
+                logMethod.invoke(null, ImportHandler.class.getName(), 10000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", new Exception());
             } else {
-                logMethod.invoke(null, ImportHandler.class.getName(), 30000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", null);
+                logMethod.invoke(null, ImportHandler.class.getName(), 10000, "Tried to resolve class : " + name + " , but was not found. This can have a performance impact, check your JSPs to optimize this call.", null);
             }
         } catch (Exception e) {
             // Cannot log
