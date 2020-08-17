@@ -91,8 +91,9 @@
         </mailingList>
     </mailingLists>
     <scm>
-        <connection>scm:svn:https://svn.java.net/svn/el-spec~source-code/tags/javax.el-api-3.0.0</connection>
-        <developerConnection>scm:svn:https://svn.java.net/svn/el-spec~source-code/tags/javax.el-api-3.0.0</developerConnection>
+        <connection>scm:git:https://github.com/Jahia/el-spec.git</connection>
+        <developerConnection>scm:git:git@github.com:Jahia/el-spec.git</developerConnection>
+        <tag>javax.el-api-3.0.0-jahia</tag>
         <url>http://java.net/projects/el-spec/sources/source-code/show/tags/javax.el-api-3.0.0</url>
     </scm>
 
